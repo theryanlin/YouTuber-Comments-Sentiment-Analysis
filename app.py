@@ -6,6 +6,7 @@ import pandas as pd
 import re
 import os
 import nltk
+from transformers import pipeline
 
 app = Flask(__name__)
 
@@ -82,14 +83,17 @@ def summarize_comments(comments_df):
     if comments_df.empty:
         return None
     
+    Positive = summarize_comments(comments_df[comments_df['Sentiment'] >= 0.4]['Comment'].values)
+    Negative = summarize_comments(comments_df[comments_df['Sentiment'] <= -0.4]['Comment'].values)
+    
     summary = {
         "Total Comments": len(comments_df),
-        "Average Sentiment": comments_df["Sentiment"].mean(),
+        "Average Sentiment": round(comments_df["Sentiment"].mean(), 2),
         "Positive Comments": (comments_df["Sentiment"] > 0).sum(),
         "Neutral Comments": (comments_df["Sentiment"] == 0).sum(),
         "Negative Comments": (comments_df["Sentiment"] < 0).sum(),
-        "Most Positive Comment": comments_df.loc[comments_df["Sentiment"].idxmax(), "Comment"],
-        "Most Negative Comment": comments_df.loc[comments_df["Sentiment"].idxmin(), "Comment"],
+        "Most Positive Comment": Positive,
+        "Most Negative Comment": Negative,
     }
     return summary
 
