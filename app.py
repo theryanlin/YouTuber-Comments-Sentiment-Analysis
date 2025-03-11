@@ -63,6 +63,12 @@ def analyze_sentiment(comment):
     analyzer = SentimentIntensityAnalyzer()
     return analyzer.polarity_scores(comment)['compound']
 
+def summarizing(comments, max_length=130):
+    summarizer = pipeline("summarization")
+    combined_text = " ".join(comments)
+    summary = summarizer(combined_text, max_length=130, min_length=30, do_sample=False)
+    return summary[0]['summary_text']
+    
 def get_comments_with_sentiment(youtube_link, max_comments=500):
     try:
         video_id = extract_video_id(youtube_link)
