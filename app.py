@@ -83,8 +83,8 @@ def summarize_comments(comments_df):
     if comments_df.empty:
         return None
     
-    Positive = summarize_comments(comments_df[comments_df['Sentiment'] >= 0.4]['Comment'].values)
-    Negative = summarize_comments(comments_df[comments_df['Sentiment'] <= -0.4]['Comment'].values)
+    Positive = summarizing(comments_df[comments_df['Sentiment'] >= 0.4]['Comment'].values)
+    Negative = summarizing(comments_df[comments_df['Sentiment'] <= -0.4]['Comment'].values)
     
     summary = {
         "Total Comments": len(comments_df),
